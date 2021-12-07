@@ -161,7 +161,7 @@ class Add_Balloon(bpy.types.Operator):
         step=1
     )
 
-    distance: IntProperty(
+    distance: FloatProperty(
         name="Distance",
         description="Distance between basket and balloon",
         default=0.7,
