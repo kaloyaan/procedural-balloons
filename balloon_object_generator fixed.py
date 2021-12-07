@@ -60,7 +60,7 @@ def vert(x, y, z):
     return (x + origin_offset[0], y + origin_offset[1], z + origin_offset[2])
 
 
-def generate_Basket(basket_x=1, basket_y=1, basket_z=0.6, basket_scale=1.0, wall_thickness_factor=0.25):
+def generate_Basket(basket_x, basket_y, basket_z, basket_scale, wall_thickness_factor):
     wall_thickness = wall_thickness_factor*basket_scale
 
     verts = [vert(basket_x*basket_scale, basket_y*basket_scale, basket_z*-basket_scale),  # cube
@@ -196,7 +196,7 @@ class Add_Balloon(bpy.types.Operator):
     basket_scale: FloatProperty(
         name="Basket Scale",
         description="Scale of the basket",
-        default=1.0,
+        default=0.3,
         min=0.01,
         soft_min=0.01,
         soft_max=300.0,
