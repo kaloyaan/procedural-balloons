@@ -25,7 +25,7 @@ mesh_offset = (0, 0, 0)
 origin_offset = (0, 0, 0)
 
 
-def generate_Balloon(radialScale, height, ringFaces, heightFaces):
+def generate_Balloon(radialScale, height, ringFaces, heightFaces, distance):
 
     verts = []
     edges = []
@@ -42,7 +42,7 @@ def generate_Balloon(radialScale, height, ringFaces, heightFaces):
                 math.cos(u) * math.sin(v) * height * 0.5
             y = ((radialScale * 0.92) + 0.2 * v) * \
                 math.sin(u) * math.sin(v) * height * 0.5
-            z = - (height * 0.6 * math.cos(v))
+            z = - (height * 0.6 * math.cos(v)) + distance
             verts.append(Vector((x, y, z)))
     for j in range(heightFElements):
         for i in range(radialFElements):
@@ -161,6 +161,15 @@ class Add_Balloon(bpy.types.Operator):
         step=1
     )
 
+    distance: IntProperty(
+        name="Distance",
+        description="Distance between basket and balloon",
+        default=0.7,
+        min=0.2,
+        soft_min=0.01,
+        step=0.5
+    )
+
     shadeSmooth: BoolProperty(
         name="Shade Smooth",
         description="",
@@ -245,6 +254,10 @@ class Add_Balloon(bpy.types.Operator):
         basketBox.prop(self, "basket_z")
         basketBox.prop(self, "basket_scale")
         basketBox.prop(self, "wall_thickness_factor")
+
+        distanceBox = layout.box()
+        distanceBox.label(text="Distance")
+        distanceBox.prop(self, "distance")
 
     def execute(self, context):
 
