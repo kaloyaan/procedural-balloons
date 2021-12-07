@@ -282,7 +282,7 @@ class Add_Balloon(bpy.types.Operator):
             wall_thickness_factor=self.wall_thickness_factor)
         mesh1 = bpy.data.meshes.new("Basket")
         mesh1.from_pydata(verts_basket, [], edges_basket)
-        basketObj = bpy.data.meshes.new(mesh1.name, mesh1)
+        basketObj = bpy.data.objects.new(mesh1.name, mesh1)
         bpy.context.scene.collection.objects.link(basketObj)
         bpy.context.view_layer.objects.active = basketObj
 
