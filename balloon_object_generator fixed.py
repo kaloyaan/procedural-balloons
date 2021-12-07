@@ -265,7 +265,8 @@ class Add_Balloon(bpy.types.Operator):
             radialScale=self.radialScale,
             height=self.height,
             ringFaces=self.ringFaces,
-            heightFaces=self.heightFaces)
+            heightFaces=self.heightFaces,
+            distance=self.distance)
 
         mesh = bpy.data.meshes.new("Balloon")
         mesh.from_pydata(verts, edges, faces)
