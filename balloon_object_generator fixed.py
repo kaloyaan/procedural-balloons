@@ -173,6 +173,56 @@ class Add_Balloon(bpy.types.Operator):
         default=True,
     )
 
+    basket_x: FloatProperty(
+        name="Basket Width",
+        description="Width of the basket",
+        default=1.0,
+        min=0.01,
+        soft_min=0.01,
+        soft_max=30.0,
+        step=1
+    )
+
+    basket_y: FloatProperty(
+        name="Basket Length",
+        description="Length of the basket",
+        default=1.0,
+        min=0.01,
+        soft_min=0.01,
+        soft_max=30.0,
+        step=1
+    )
+
+    basket_scale: FloatProperty(
+        name="Basket Scale",
+        description="Scale of the basket",
+        default=1.0,
+        min=0.01,
+        soft_min=0.01,
+        soft_max=300.0,
+        step=1
+    )
+
+    basket_z: FloatProperty(
+        name="Basket Height",
+        description="Height of the basket",
+        default=0.6,
+        min=0.01,
+        soft_min=0.01,
+        soft_max=30.0,
+        step=1
+    )
+
+    wall_thickness_factor: FloatProperty(
+        name="Basket Wall Thickness",
+        description="Wall thickness of the basket",
+        default=0.25,
+        min=0.01,
+        soft_min=0.01,
+        soft_max=0.9,
+        step=0.2
+    )
+
     def draw(self, context):
         layout = self.layout
 
