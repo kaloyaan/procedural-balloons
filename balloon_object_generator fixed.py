@@ -196,11 +196,11 @@ class Add_Balloon(bpy.types.Operator):
     basket_scale: FloatProperty(
         name="Basket Scale",
         description="Scale of the basket",
-        default=0.3,
+        default=0.09,
         min=0.01,
         soft_min=0.01,
-        soft_max=300.0,
-        step=1
+        soft_max=1.0,
+        step=0.1
     )
 
     basket_z: FloatProperty(
@@ -237,6 +237,14 @@ class Add_Balloon(bpy.types.Operator):
         sizebox.label(text="Size")
         sizebox.prop(self, "height")
         sizebox.prop(self, "radialScale")
+
+        basketBox = layout.box()
+        basketBox.label(text="Basket")
+        basketBox.prop(self, "basket_x")
+        basketBox.prop(self, "basket_y")
+        basketBox.prop(self, "basket_z")
+        basketBox.prop(self, "basket_scale")
+        basketBox.prop(self, "wall_thickness_factor")
 
     def execute(self, context):
 
@@ -283,7 +291,7 @@ class Add_Balloon(bpy.types.Operator):
         mesh1 = bpy.data.meshes.new("Basket")
         mesh1.from_pydata(verts_basket, [], edges_basket)
         basketObj = bpy.data.objects.new(mesh1.name, mesh1)
-        bpy.context.scene.collection.objects.link(basketObj)
+        bpy.context.collection.objects.link(basketObj)
         bpy.context.view_layer.objects.active = basketObj
 
         return {'FINISHED'}
