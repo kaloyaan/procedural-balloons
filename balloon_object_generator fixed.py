@@ -20,6 +20,10 @@ bl_info = {
     "category": "Object"
 }
 
+# Origin point transformation settings
+mesh_offset = (0, 0, 0)
+origin_offset = (0, 0, 0)
+
 
 def generate_Balloon(radialScale, height, ringFaces, heightFaces):
 
@@ -48,6 +52,59 @@ def generate_Balloon(radialScale, height, ringFaces, heightFaces):
             r2 = radialFElements*(j+1)
             faces.append([r1 + a, r2 + a, r2 + b, r1 + b])
     return verts, edges, faces
+
+
+def vert(x, y, z):
+    """ Make a vertex """
+
+    return (x + origin_offset[0], y + origin_offset[1], z + origin_offset[2])
+
+
+def generate_Basket(basket_x=1, basket_y=1, basket_z=0.6, basket_scale=1.0, wall_thickness_factor=0.25):
+    wall_thickness = wall_thickness_factor*basket_scale
+
+    verts = [vert(basket_x*basket_scale, basket_y*basket_scale, basket_z*-basket_scale),  # cube
+             vert(basket_x*basket_scale, basket_y*- \
+                  basket_scale, basket_z*-basket_scale),
+             vert(basket_x*-basket_scale, basket_y*- \
+                  basket_scale, basket_z*-basket_scale),
+             vert(basket_x*-basket_scale, basket_y * \
+                  basket_scale, basket_z*-basket_scale),
+             vert(basket_x*basket_scale, basket_y*basket_scale, basket_scale),
+             vert(basket_x*basket_scale, basket_y*-basket_scale, basket_scale),
+             vert(basket_x*-basket_scale, basket_y*-basket_scale, basket_scale),
+             vert(basket_x*-basket_scale, basket_y*basket_scale, basket_scale),
+             vert((basket_x*basket_scale)-wall_thickness, (basket_y*basket_scale) - \
+                  wall_thickness, (basket_z*-basket_scale)+wall_thickness),  # bottom square
+             vert((basket_x*-basket_scale)+wall_thickness, (basket_y*basket_scale) - \
+                  wall_thickness, (basket_z*-basket_scale)+wall_thickness),
+             vert((basket_x*-basket_scale)+wall_thickness, (basket_y*-basket_scale) + \
+                  wall_thickness, (basket_z*-basket_scale)+wall_thickness),
+             vert((basket_x*basket_scale)-wall_thickness, (basket_y*-basket_scale) + \
+                  wall_thickness, (basket_z*-basket_scale)+wall_thickness),
+             vert((basket_x*basket_scale)-wall_thickness, (basket_y * \
+                                                           basket_scale)-wall_thickness, basket_scale),  # top square
+             vert((basket_x*-basket_scale)+wall_thickness,
+                  (basket_y*basket_scale)-wall_thickness, basket_scale),
+             vert((basket_x*-basket_scale)+wall_thickness,
+                  (basket_y*-basket_scale)+wall_thickness, basket_scale),
+             vert((basket_x*basket_scale)-wall_thickness, (basket_y*-basket_scale)+wall_thickness, basket_scale)]
+
+    faces = [(0, 1, 2, 3),  # bottom
+             (4, 7, 13, 12),  # top insets
+             (13, 7, 6, 14),
+             (15, 14, 6, 5),
+             (4, 12, 15, 5),
+             (8, 9, 10, 11),  # bottom inner square
+             (8, 9, 13, 12),  # inner sides
+             (9, 10, 14, 13),
+             (11, 10, 14, 15),
+             (11, 8, 12, 15),
+             (0, 4, 5, 1),  # outer sides
+             (1, 5, 6, 2),
+             (2, 6, 7, 3),
+             (4, 0, 3, 7)]
+    return verts, faces
 
 
 class Add_Balloon_Menu(bpy.types.Menu):
@@ -165,6 +222,19 @@ class Add_Balloon(bpy.types.Operator):
             bpy.ops.mesh.select_all(action='SELECT')
             bpy.ops.mesh.remove_doubles()
         bpy.ops.object.mode_set(mode='OBJECT')
+
+        # Generate basket
+        verts_basket, edges_basket = generate_Basket(
+            basket_x=self.basket_x,
+            basket_y=self.basket_y,
+            basket_z=self.basket_z,
+            basket_scale=self.basket_scale,
+            wall_thickness_factor=self.wall_thickness_factor)
+        mesh1 = bpy.data.meshes.new("Basket")
+        mesh1.from_pydata(verts_basket, [], edges_basket)
+        basketObj = bpy.data.meshes.new(mesh1.name, mesh1)
+        bpy.context.scene.collection.objects.link(basketObj)
+        bpy.context.view_layer.objects.active = basketObj
 
         return {'FINISHED'}
 
