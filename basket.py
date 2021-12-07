@@ -11,16 +11,9 @@ name = 'Basket'
 mesh_offset = (0, 0, 0)
 origin_offset = (0, 0, 0)
 
-# Matrices settings
-translation = (0, 0, 0)
-scale_factor = 1
-scale_axis = (1, 1, 1)
-rotation_angle = math.radians(0)
-rotation_axis = 'X'
-
-
 # -----------------------------------------------------------------------------
 # Utility Functions
+
 
 def vert(x, y, z):
     """ Make a vertex """
@@ -99,20 +92,3 @@ obj.select_set(True)
 # Offset mesh to move origin point
 
 obj.location = [(i * -1) + mesh_offset[j] for j, i in enumerate(origin_offset)]
-
-
-# -----------------------------------------------------------------------------
-# Matrix Magic
-
-#translation_matrix = Matrix.Translation(translation)
-#scale_matrix = Matrix.Scale(scale_factor, 4, scale_axis)
-#rotation_mat = Matrix.Rotation(rotation_angle, 4, rotation_axis)
-
-#obj.matrix_world @= translation_matrix @ rotation_mat @ scale_matrix
-
-
-# -----------------------------------------------------------------------------
-# Matrix Magic (in the mesh)
-
-# Uncomment this to change the mesh
-## obj.data.transform(translation_matrix @ scale_matrix)
