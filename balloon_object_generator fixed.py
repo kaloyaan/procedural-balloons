@@ -1,4 +1,3 @@
-
 import bmesh
 import math
 import bpy
@@ -259,6 +258,28 @@ class Add_Balloon(bpy.types.Operator):
         distanceBox.label(text="Distance")
         distanceBox.prop(self, "distance")
 
+    def generate_mat_balloon():
+        balloon_mat = bpy.data.materials.new("BalloonMat")
+        balloon_mat.use_nodes = True
+        bpy.context.object.active_material = balloon_mat
+        principled_node = balloon_mat.node_tree.nodes.get('Principled BSDF')
+        principled_node.inputs[0].default_value = (
+            random.random(), random.random(), random.random(), 1)  # Change color to random one
+
+    def generate_mat_basket():
+
+        basket_mat = bpy.data.materials.new("BasketMat")
+        basket_mat.use_nodes = True
+        bpy.context.object.active_material = basket_mat
+        principled_node_basket = basket_mat.node_tree.nodes.get(
+            'Principled BSDF')
+        principled_node_basket.inputs[0].default_value = (
+            0.370625, 0.258177, 0.0869385, 1)  # Change color to brown
+        # set roughness to 1
+        principled_node_basket.inputs[7].default_value = 1
+        # set specular to 0.2
+        principled_node_basket.inputs[5].default_value = 0.2
+
     def execute(self, context):
 
         verts, edges, faces = generate_Balloon(
@@ -295,6 +316,8 @@ class Add_Balloon(bpy.types.Operator):
             bpy.ops.mesh.remove_doubles()
         bpy.ops.object.mode_set(mode='OBJECT')
 
+        Add_Balloon.generate_mat_balloon()  # generate materials
+
         # Generate basket
         verts_basket, edges_basket = generate_Basket(
             basket_x=self.basket_x,
@@ -307,6 +330,8 @@ class Add_Balloon(bpy.types.Operator):
         basketObj = bpy.data.objects.new(mesh1.name, mesh1)
         bpy.context.collection.objects.link(basketObj)
         bpy.context.view_layer.objects.active = basketObj
+
+        Add_Balloon.generate_mat_basket()  # generate materials
 
         return {'FINISHED'}
 
