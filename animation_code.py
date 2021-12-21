@@ -6,8 +6,8 @@ for balloon in bpy.data.objects:
     if "Balloon" in balloon.name:
         try:
             # Add path
-            bpy.ops.curve.primitive_nurbs_path_add(radius=(
-                2*random.random()), rotation=(random.random(), random.random(), random.random()))
+            bpy.ops.curve.primitive_nurbs_path_add(radius=random.random(
+            ), location=balloon.location, rotation=(random.random(), random.random(), random.random()))
             curve_ob = bpy.context.object
 
             frame_start = 1
